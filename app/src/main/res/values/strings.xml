@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Mamasan_FoodBank</string>
+    <string name="title_activity_replenishment_list">replenishment_list</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_onGoing">Ongoing</string>
+    <string name="tab_text_booking">Booking</string>
+    <string name="tab_text_completed">Completed</string>
+    <string name="tab_text_canceled">Canceled</string>
+    <string name="userName">Hon King Yann</string>
+    <string name="campaign_title">Replenishment Title</string>
+    <string name="campaign_food_title">Food Title</string>
+    <string name="DateTime">Sat, Sep 24, 11:06 AM</string>
+</resources>
