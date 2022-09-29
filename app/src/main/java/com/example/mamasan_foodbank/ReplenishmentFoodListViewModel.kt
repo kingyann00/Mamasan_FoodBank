@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class ReplenishmentFoodListViewModel : ViewModel() {
-    val liveData = MutableLiveData<ArrayList<FoodData>>()
+    var liveData = MutableLiveData<ArrayList<FoodData>>()
     private var FoodList = ArrayList<FoodData>()
 //    fun updatFoodList(foodData: FoodData){
 //        liveData.add(foodData)
