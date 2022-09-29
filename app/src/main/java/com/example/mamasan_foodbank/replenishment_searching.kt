@@ -6,13 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mamasan_foodbank.databinding.ActivityReplenishmentSearchBinding
 import com.example.mamasan_foodbank.databinding.FragmentReplenishmentListBinding
 import com.example.mamasan_foodbank.databinding.FragmentReplenishmentSearchingBinding
 
-class replenishment_searching : Fragment() {
+class replenishment_searching : Fragment(),OnReplenishmentClickListener {
     private var replenishmentList = ArrayList<Replenishment>()
     private lateinit var replenishmentAdapter : ReplenishmentAdapter
     lateinit var replenishmentImg: Array<Int>
@@ -35,7 +36,7 @@ class replenishment_searching : Fragment() {
         val root = _binding.root
         dataIntialize()
         val recyclerView: RecyclerView = _binding.RecyclerReplenishmentList
-        replenishmentAdapter= ReplenishmentAdapter(replenishmentList)
+        replenishmentAdapter= ReplenishmentAdapter(replenishmentList,this)
         val layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
 
@@ -90,6 +91,10 @@ class replenishment_searching : Fragment() {
             replenishmentList.add(replenishment)
 
         }
+    }
+
+    override fun onRelenishmentClicked(position: Int) {
+        Toast.makeText(context,"Replenishment"+position+" Clicked",Toast.LENGTH_LONG).show()
     }
 
 }

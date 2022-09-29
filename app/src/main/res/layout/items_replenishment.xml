@@ -23,12 +23,13 @@ android:layout_marginTop="@dimen/basic_margin"
         android:paddingBottom="@dimen/tiny_spacing">
 
         <TextView
-            android:id="@+id/replenishment_dateTime"
+            android:id="@+id/replenishmentTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/tiny_spacing"
-            android:text="@string/DateTime"
-            android:textColor="@color/black"
+            android:fontFamily="@font/roboto_black"
+            android:text="@string/campaign_title"
+            android:textColor="@color/color_2"
             android:textSize="@dimen/tiny_description"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +42,7 @@ android:layout_marginTop="@dimen/basic_margin"
             android:background="@color/color_sperator"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/replenishment_dateTime" />
+            app:layout_constraintTop_toBottomOf="@id/replenishmentTitle" />
 
 
         <ImageView
@@ -56,32 +57,20 @@ android:layout_marginTop="@dimen/basic_margin"
             app:layout_constraintTop_toBottomOf="@+id/view"
             app:srcCompat="@drawable/campaign_img_test" />
 
-        <TextView
-            android:id="@+id/replenishmentTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-
-            android:layout_marginStart="@dimen/basic_margin"
-            android:layout_marginBottom="66dp"
-            android:fontFamily="@font/roboto_black"
-            android:text="@string/campaign_title"
-            android:layout_marginTop="@dimen/basic_margin"
-            android:textColor="@color/color_2"
-            android:textSize="@dimen/title_h3"
-            app:layout_constraintBottom_toBottomOf="@+id/replenishmentImg"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/replenishmentImg"
-            app:layout_constraintTop_toTopOf="@+id/replenishmentImg" />
 
         <ImageView
             android:id="@+id/location_icon"
             android:layout_width="@dimen/small_description"
             android:layout_height="@dimen/small_description"
 
+android:layout_marginTop="@dimen/basic_margin"
+            android:layout_marginStart="@dimen/basic_margin"
+            app:layout_constraintBottom_toTopOf="@+id/scrollView"
 
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/replenishmentTitle"
-            app:layout_constraintTop_toBottomOf="@+id/replenishmentTitle"
+
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/replenishmentImg"
+            app:layout_constraintTop_toBottomOf="@+id/view"
             app:srcCompat="@drawable/ic_baseline_location_on_24" />
 
         <TextView
@@ -91,15 +80,44 @@ android:layout_marginTop="@dimen/basic_margin"
 
             android:text="Kuala Lumpur Branch"
             android:textColor="@color/color_description"
-            android:textSize="@dimen/small_description"
-            android:layout_marginStart="@dimen/basic_margin"
-
+            android:textSize="@dimen/tiny_description"
             app:layout_constraintBottom_toBottomOf="@+id/location_icon"
-
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/location_icon"
             app:layout_constraintTop_toTopOf="@+id/location_icon"
             app:layout_constraintVertical_bias="1.0" />
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="0dp"
+            android:layout_height="127dp"
+
+            android:layout_marginTop="@dimen/tiny_spacing"
+android:layout_marginBottom="@dimen/tiny_spacing"
+            app:layout_constraintStart_toStartOf="@+id/location_icon"
+            app:layout_constraintTop_toBottomOf="@+id/location_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <TextView
+                android:id="@+id/replenishmentDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:text="@string/description"
+
+                android:textSize="@dimen/tiny_description"/>
+        </LinearLayout>
+        </ScrollView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

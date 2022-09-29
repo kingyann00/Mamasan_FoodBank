@@ -17,8 +17,12 @@
     <dimen name="tiny_spacing">5dp</dimen>
     <dimen name="small_description">14dp</dimen>
     <dimen name="tiny_description">12dp</dimen>
+    <dimen name="supertiny_description">10dp</dimen>
     <dimen name="small_label">12</dimen>
     <dimen name="viewAll">12dp</dimen>
 
     <dimen name="list_image">70dp</dimen>
+    <dimen name="basic_elevation">10dp</dimen>
+    <dimen name="basic_radius">10dp</dimen>
+    <dimen name="large_radius">25dp</dimen>
 </resources>

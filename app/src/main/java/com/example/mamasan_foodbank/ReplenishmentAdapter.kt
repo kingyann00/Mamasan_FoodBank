@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ReplenishmentAdapter (val campaignList: ArrayList<Replenishment>): RecyclerView.Adapter<ReplenishmentAdapter.ViewHolder>() {
+class ReplenishmentAdapter (val campaignList: ArrayList<Replenishment>,private  val onReplenishmentClickListener:OnReplenishmentClickListener): RecyclerView.Adapter<ReplenishmentAdapter.ViewHolder>() {
 
     override fun getItemCount()= campaignList.size
 
@@ -18,8 +18,10 @@ class ReplenishmentAdapter (val campaignList: ArrayList<Replenishment>): Recycle
         holder.replenishmentImg.setBackgroundResource(campaignList[position].replenishmentImg)
         holder.replenishmentTitle.text = campaignList[position].replenishmentTitle
         holder.location.text = campaignList[position].location
-        holder.replenishment_dateTime.text = campaignList[position].replenishment_dateTime
-
+//        holder.replenishment_dateTime.text = campaignList[position].replenishment_dateTime
+holder.itemView.setOnClickListener{
+    onReplenishmentClickListener.onRelenishmentClicked(position)
+}
 
 
     }
@@ -32,7 +34,8 @@ class ReplenishmentAdapter (val campaignList: ArrayList<Replenishment>): Recycle
         val replenishmentImg  : ImageView = itemView.findViewById(R.id.replenishmentImg)
         val replenishmentTitle  : TextView = itemView.findViewById(R.id.replenishmentTitle)
         val location : TextView = itemView.findViewById(R.id.location)
-        val replenishment_dateTime : TextView = itemView.findViewById(R.id.replenishment_dateTime)
+        val replenishmentDescription : TextView = itemView.findViewById(R.id.replenishmentDescription)
+//        val replenishment_dateTime : TextView = itemView.findViewById(R.id.replenishment_dateTime)
 
     }
 }

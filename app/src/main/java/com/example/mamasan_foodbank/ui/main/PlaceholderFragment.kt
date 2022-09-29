@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mamasan_foodbank.OnReplenishmentClickListener
 import com.example.mamasan_foodbank.R
 import com.example.mamasan_foodbank.Replenishment
 import com.example.mamasan_foodbank.ReplenishmentAdapter
@@ -19,7 +21,7 @@ import com.example.mamasan_foodbank.databinding.FragmentReplenishmentListBinding
 /**
  * A placeholder fragment containing a simple view.
  */
-class PlaceholderFragment : Fragment() {
+class PlaceholderFragment : Fragment(), OnReplenishmentClickListener {
     private var replenishmentList = ArrayList<Replenishment>()
     private lateinit var replenishmentAdapter : ReplenishmentAdapter
     lateinit var replenishmentImg: Array<Int>
@@ -60,7 +62,7 @@ class PlaceholderFragment : Fragment() {
             textView.text = it
             dataIntialize()
             val recyclerView: RecyclerView = _binding!!.RecyclerReplenishmentList
-            replenishmentAdapter= ReplenishmentAdapter(replenishmentList)
+            replenishmentAdapter= ReplenishmentAdapter(replenishmentList,this)
             val layoutManager = LinearLayoutManager(context)
             recyclerView.layoutManager = layoutManager
 
@@ -145,5 +147,9 @@ class PlaceholderFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onRelenishmentClicked(position: Int) {
+        Toast.makeText(context,"Replenishment"+position+" Clicked", Toast.LENGTH_LONG).show()
     }
 }

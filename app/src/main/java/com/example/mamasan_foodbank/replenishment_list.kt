@@ -12,7 +12,7 @@ import android.view.MenuItem
 import com.example.mamasan_foodbank.ui.main.SectionsPagerAdapter
 import com.example.mamasan_foodbank.databinding.ActivityReplenishmentListBinding
 
-class replenishment_list : AppCompatActivity() {
+class replenishment_list : AppCompatActivity(){
 
     private lateinit var binding: ActivityReplenishmentListBinding
 
@@ -34,4 +34,6 @@ class replenishment_list : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+
 }
