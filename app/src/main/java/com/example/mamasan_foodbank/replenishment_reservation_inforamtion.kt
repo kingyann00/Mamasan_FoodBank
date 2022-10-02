@@ -1,15 +1,10 @@
 package com.example.mamasan_foodbank
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
-import com.example.mamasan_foodbank.databinding.FragmentReplenishmentInformationBinding
-import com.example.mamasan_foodbank.databinding.FragmentReplenishmentReservationDetailBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -18,16 +13,14 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [replenishment_reservation_detail.newInstance] factory method to
+ * Use the [replenishment_reservation_inforamtion.newInstance] factory method to
  * create an instance of this fragment.
  */
-class replenishment_reservation_detail : Fragment() {
+class replenishment_reservation_inforamtion : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
-    private lateinit var _binding: FragmentReplenishmentReservationDetailBinding
-    private val binding get() = _binding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -40,16 +33,12 @@ class replenishment_reservation_detail : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentReplenishmentReservationDetailBinding.inflate(inflater, container, false)
-        val root = binding.root
-//        _binding.reservationCard.setOnClickListener{
-//            if (_binding.reservationInformationCard.isVisible == true)
-//                _binding.reservationInformationCard.isVisible = false
-//            else
-//                _binding.reservationInformationCard.isVisible = true
-//        }
-
-        return root
+        // Inflate the layout for this fragment
+        return inflater.inflate(
+            R.layout.fragment_replenishment_reservation_inforamtion,
+            container,
+            false
+        )
     }
 
     companion object {
@@ -59,12 +48,12 @@ class replenishment_reservation_detail : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment replenishment_reservation_detail.
+         * @return A new instance of fragment replenishment_reservation_inforamtion.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            replenishment_reservation_detail().apply {
+            replenishment_reservation_inforamtion().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

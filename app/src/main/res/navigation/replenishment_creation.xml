@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/replenishment_creation"
+    app:startDestination="@id/replenishment_information_create">
+
+    <fragment
+        android:id="@+id/replenishment_information_create"
+        android:name="com.example.mamasan_foodbank.replenishment_information_create"
+        android:label="replenishment_information_create"
+       tools:layout="@layout/fragment_replenishment_information_create"
+        >
+        <action
+            android:id="@+id/action_replenishment_information_create_to_replenishment_food_create"
+            app:destination="@id/replenishment_food_create" />
+    </fragment>
+    <fragment
+        android:id="@+id/replenishment_food_create"
+        android:name="com.example.mamasan_foodbank.replenishment_food_create"
+        android:label="replenishment_food_create"
+        tools:layout="@layout/item_replenishment_food_create"/>
+</navigation>

@@ -1,17 +1,26 @@
 package com.example.mamasan_foodbank
 
+import android.R
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.SpinnerAdapter
 import androidx.core.view.isVisible
-import androidx.lifecycle.liveData
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mamasan_foodbank.databinding.FragmentReplenishmentFoodBinding
+import com.android.volley.AuthFailureError
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.mamasan_foodbank.databinding.FragmentReplenishmentFoodCreateBinding
-import com.example.mamasan_foodbank.databinding.FragmentReplenishmentFoodListBinding
+import com.google.gson.Gson
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,6 +29,8 @@ private const val ARG_PARAM2 = "param2"
 
 private lateinit var viewModel: ReplenishmentFoodListViewModel
 private var FoodList = ArrayList<FoodData>()
+val foodData = ArrayList<FoodData>()
+
 lateinit var foodName: Array<String>
 lateinit var foodType: Array<String>
 lateinit var SKU: Array<String>
@@ -29,10 +40,20 @@ private lateinit var foodAdapter: FoodAdapter
 private lateinit var _binding: FragmentReplenishmentFoodCreateBinding
 private val binding get() = _binding
 
+ lateinit var descriptionList: Array<String>
+lateinit var sku_descriptionList: Array<String>
+private var URL: String = ""
+lateinit var foodTypeList: ArrayList<FoodType>
+lateinit var skuList: ArrayList<DataSKU>
+
+var gson = Gson()
+
 class replenishment_food_create : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    var count = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,27 +68,222 @@ class replenishment_food_create : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
         _binding = FragmentReplenishmentFoodCreateBinding.inflate(inflater, container, false)
         val root = binding.root
-        _binding.replenishmentTitleCard.setOnClickListener{
-            if (_binding.replenishmentInformationCard.isVisible == true)
-                _binding.replenishmentInformationCard.isVisible = false
-            else
-                _binding.replenishmentInformationCard.isVisible = true
+
+//        dataIntialize()
+        viewModel = ViewModelProvider(this).get(ReplenishmentFoodListViewModel::class.java)
+//           setFoodList(FoodList)
+//        }
+//                viewModel.getFoodData().observe(viewLifecycleOwner, Observer {
+//
+//                    foodData.addAll(it)
+//
+//
+//
+//        })
+        getFoodType()
+        getSKU()
+               val recyclerView: RecyclerView = _binding.recyclerFoodList
+
+        FoodList.addAll(viewModel.foodListViewModel)
+        val layoutManager = LinearLayoutManager(context)
+        foodAdapter= FoodAdapter(FoodList)
+        recyclerView.layoutManager = layoutManager
+
+        recyclerView.adapter = foodAdapter
+        _binding.buttonAddOn.setOnClickListener{
+            viewModel.updateCount()
+
+
+            viewModel.updateFoodData(
+                _binding.foodNameField.text.toString(),
+                "SHit",
+                "KG",
+                "0",
+                Integer.valueOf( _binding.quantityField.text.toString()),
+                Integer.valueOf( _binding.skuQuantity.text.toString()),
+            )
+            _binding.foodNameField.text.clear()
+            _binding.quantityField.text.clear()
+            _binding.skuQuantity.text.clear()
+            FoodList.clear()
+            FoodList.addAll(viewModel.foodListViewModel)
+            foodAdapter= FoodAdapter(FoodList)
+
+
+            recyclerView.adapter = foodAdapter
         }
 
+//        _binding.buttonAddOn.setOnClickListener{
+//            updateData()
+//            foodAdapter= FoodAdapter(FoodList)
+//            recyclerView.layoutManager = layoutManager
+//
+//            recyclerView.adapter = foodAdapter
+//        }
 
+        _binding.foodFormCard.isVisible = false
+
+        _binding.replenishmentFoodCreateCard.setOnClickListener{
+            if (_binding.foodFormCard.isVisible == true)
+                _binding.foodFormCard.isVisible = false
+            else
+                _binding.foodFormCard.isVisible = true
+        }
+
+        _binding.replenishmentFoodCard.setOnClickListener{
+            if (_binding.replenishmentFoodListCard.isVisible == true)
+                _binding.replenishmentFoodListCard.isVisible = false
+            else
+                _binding.replenishmentFoodListCard.isVisible = true
+        }
 
         return root
     }
-    private fun dataIntialize() {
+//    override fun onActivityCreated(savedInstanceState: Bundle?) {
+//        super.onActivityCreated(savedInstanceState)
+//
+//        viewModel = ViewModelProvider(this).get(ReplenishmentFoodListViewModel::class.java).apply {
+//            setIndex(1)
+//        }
+//        viewModel.text.observe(viewLifecycleOwner, Observer {
+//            _binding.replenishmentFoodHeader.text = it
+//
+//
+//        })
+//
+//    }
+    fun getFoodType() {
+    URL = "http://10.0.2.2/mamasan/foodType.php"
+    var temp = ""
+
+ descriptionList = arrayOf("Select A food type")
+
+    if (temp == "") {
+
+        val stringRequest: StringRequest = object : StringRequest(
+            Request.Method.POST, URL,
+            Response.Listener { response ->
+                Log.d("res", response)
+                foodTypeList = ArrayList()
+                var foodType_id: String = ""
+                var description: String = ""
+                val data = gson.fromJson(response,Array<FoodType>::class.java)
+
+                for(i in 0..data.size-1){
+
+
+                    foodType_id = data[i].foodType_id.toString()
+                    description = data[i].description.toString()
+
+                    val foodTypeData = FoodType(
+                        data[i].foodType_id.toString(),
+                        data[i].description.toString(),
+                    )
+
+                    foodTypeList.add(foodTypeData)
+                    descriptionList += foodTypeList[i].description.toString()
+                }
+
+
+                _binding.foodTypeSpinner.adapter = ArrayAdapter(requireActivity().applicationContext, android.R.layout.simple_spinner_item, descriptionList) as SpinnerAdapter
+
+            },
+            Response.ErrorListener { error ->
+
+            }) {
+            @Throws(AuthFailureError::class)
+            override fun getParams(): Map<String, String>? {
+                val data: MutableMap<String, String> = HashMap()
+                data["temp"] = temp
+                return data
+            }
+        }
+        val requestQueue = Volley.newRequestQueue(context)
+        requestQueue.add(stringRequest)
+    }
+}
+
+    fun getSKU(){
+        URL = "http://10.0.2.2/mamasan/getSku.php"
+        var temp = ""
+
+        sku_descriptionList = arrayOf("Select A SKU")
+        skuList = ArrayList()
+        if (temp == "") {
+
+            val stringRequest: StringRequest = object : StringRequest(
+                Request.Method.POST, URL,
+                Response.Listener { response ->
+                    Log.d("res", response)
+
+                    var SKU_id: String = ""
+                    var description: String = ""
+                    var symbol: String = ""
+                    val data = gson.fromJson(response,Array<DataSKU>::class.java)
+
+                    for(i in 0..data.size-1){
+
+
+                        SKU_id = data[i].SKU_id.toString()
+                        description = data[i].description.toString()
+                        symbol = data[i].symbol.toString()
+
+                        val dataSKU = DataSKU(
+                            SKU_id,
+                            description,
+                            symbol,
+                        )
+
+                        skuList.add(dataSKU)
+
+                        sku_descriptionList += description.plus(" (").plus(symbol).plus(")")
+                    }
+
+
+                    _binding.skuSpinner.adapter = ArrayAdapter(requireActivity().applicationContext, android.R.layout.simple_spinner_item, sku_descriptionList) as SpinnerAdapter
+
+                },
+                Response.ErrorListener { error ->
+
+                }) {
+                @Throws(AuthFailureError::class)
+                override fun getParams(): Map<String, String>? {
+                    val data: MutableMap<String, String> = HashMap()
+                    data["temp"] = temp
+                    return data
+                }
+            }
+            val requestQueue = Volley.newRequestQueue(context)
+            requestQueue.add(stringRequest)
+        }
+    }
+    fun updateData(){
+    FoodList = ArrayList()
+
+        val foodData = FoodData(
+            _binding.foodNameField.text.toString(),
+            "ABC FOod",
+            "gg",
+            "0",
+            100,
+            500,
+
+        )
+        FoodList.add(foodData)
+
+
+    }
+     fun dataIntialize() {
 
 
         foodName = arrayOf(
             "Food 1", "Food 2", "Food 3", "Food 4", "Food 6", "Food 5"
         )
 
-        foodType = arrayOf(
+         foodType = arrayOf(
             "Frozen Food",
             "Frozen Food",
             "Dry Food",
@@ -107,23 +323,6 @@ class replenishment_food_create : Fragment() {
 
 
     }
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment replenishment_food_create.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            replenishment_food_create().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+
 }
+

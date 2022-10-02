@@ -24,4 +24,7 @@
     <string name="campaign_food_type">frozen food</string>
     <string name="approve">Approve</string>
     <string name="reject">Reject</string>
+    <string name="title_activity_replenishment_reservation_list">replenishment_reservation_list
+    </string>
+    <string name="title_activity_replenishment_reservation">replenishment_reservation</string>
 </resources>

@@ -1,13 +1,13 @@
-package com.example.mamasan_foodbank.ui.main
+package com.example.mamasan_foodbank.replenishment_reservation.ui.main
 
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,8 +16,12 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.example.mamasan_foodbank.*
-import com.example.mamasan_foodbank.databinding.FragmentReplenishmentListBinding
+import com.example.mamasan_foodbank.OnReplenishmentClickListener
+import com.example.mamasan_foodbank.ReplenishmentAdapter
+
+import com.example.mamasan_foodbank.databinding.FragmentReplenishmentReservationListBinding
+import com.example.mamasan_foodbank.replenishment_reservation.DataReplenishmentReservation
+import com.example.mamasan_foodbank.replenishment_reservation.ReplenishmentReservationAdapter
 import com.google.gson.Gson
 
 /**
@@ -25,28 +29,28 @@ import com.google.gson.Gson
  */
 class PlaceholderFragment : Fragment(), OnReplenishmentClickListener {
 
-    private lateinit var replenishmentAdapter : ReplenishmentAdapter
-
-
-
-
     private lateinit var pageViewModel: PageViewModel
-    private var _binding: FragmentReplenishmentListBinding? = null
+    private var _binding: FragmentReplenishmentReservationListBinding? = null
+
+    private lateinit var reservationAdapter : ReplenishmentReservationAdapter
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+
+
+
 
     //database
 
 
-    lateinit var dataReplenishments: ArrayList<DataReplenishments>
+    lateinit var dataReservation: ArrayList<DataReplenishmentReservation>
 
 
     var gson = Gson()
     private val binding get() = _binding!!
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         pageViewModel = ViewModelProvider(this).get(PageViewModel::class.java).apply {
             setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
-
         }
     }
 
@@ -55,28 +59,72 @@ class PlaceholderFragment : Fragment(), OnReplenishmentClickListener {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentReplenishmentListBinding.inflate(inflater, container, false)
+        _binding = FragmentReplenishmentReservationListBinding.inflate(inflater, container, false)
         val root = binding.root
 
         val textView: TextView = binding.sectionLabel
 
 
-        getAllReplenishment(arguments?.getInt(ARG_SECTION_NUMBER)?: 1)
+        getAllReservation(arguments?.getInt(PlaceholderFragment.ARG_SECTION_NUMBER)?: 1)
         textView.text = pageViewModel.getDataCount().toString()
 
         return root
     }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    fun getAllReservation(position: Int) {
+        var URL = "http://10.0.2.2/mamasan/getReplenishmentReservation.php"
+        var statusTab = ""
+
+        statusTab = position.toString()
 
 
+        dataReservation = ArrayList()
+        if (statusTab !=  "") {
+
+            val stringRequest: StringRequest = object : StringRequest(
+                Request.Method.POST, URL,
+                Response.Listener { response ->
+                    Log.d("res", response)
+
+                    var replenishment_id: String = ""
+                    var replenishment_title: String = ""
+                    var replenishment_description: String = ""
+                    var replenishment_date_start: String = ""
+                    var replenishment_date_end: String = ""
+                    var location: String = ""
+                    var status: String = ""
+
+                    if (response != "0 results") {
+                        val data =
+                            gson.fromJson(response, Array<DataReplenishmentReservation>::class.java)
+                        pageViewModel.setDataReservation(data)
 
 
+                        val recyclerView: RecyclerView = _binding!!.RecyclerReservationList
+                        reservationAdapter =
+                            ReplenishmentReservationAdapter(pageViewModel.dataReservation, this)
+                        val layoutManager = LinearLayoutManager(context)
+                        recyclerView.layoutManager = layoutManager
+
+                        recyclerView.adapter = reservationAdapter
+                    }
 
 
+                },
+                Response.ErrorListener { error ->
 
-
+                }) {
+                @Throws(AuthFailureError::class)
+                override fun getParams(): MutableMap<String, String>? {
+                    val data: MutableMap<String, String> = HashMap()
+                    data["status"] = statusTab
+                    return data
+                }
+            }
+            val requestQueue = Volley.newRequestQueue(context)
+            requestQueue.add(stringRequest)
+        }
     }
+
     companion object {
         /**
          * The fragment argument representing the section number for this
@@ -97,58 +145,6 @@ class PlaceholderFragment : Fragment(), OnReplenishmentClickListener {
             }
         }
     }
-    fun getAllReplenishment(position: Int) {
-        var URL = "http://10.0.2.2/mamasan/getAllReplenishment.php"
-        var statusTab = ""
-
-        statusTab = position.toString()
-
-
-        dataReplenishments = ArrayList()
-        if (statusTab !=  "") {
-
-            val stringRequest: StringRequest = object : StringRequest(
-                Request.Method.POST, URL,
-                Response.Listener { response ->
-                    Log.d("res", response)
-
-                    var replenishment_id: String = ""
-                    var replenishment_title: String = ""
-                    var replenishment_description: String = ""
-                    var replenishment_date_start: String = ""
-                    var replenishment_date_end: String = ""
-                    var location: String = ""
-                    var status: String = ""
-
-
-                    val data = gson.fromJson(response,Array<DataReplenishments>::class.java)
-                    pageViewModel.setDataReplenishments(data)
-
-
-                    val recyclerView: RecyclerView = _binding!!.RecyclerReplenishmentList
-                    replenishmentAdapter= ReplenishmentAdapter( pageViewModel.dataReplenishments,this)
-                    val layoutManager = LinearLayoutManager(context)
-                    recyclerView.layoutManager = layoutManager
-
-                    recyclerView.adapter = replenishmentAdapter
-
-
-
-                },
-                Response.ErrorListener { error ->
-
-                }) {
-                @Throws(AuthFailureError::class)
-                override fun getParams(): MutableMap<String, String>? {
-                    val data: MutableMap<String, String> = HashMap()
-                    data["status"] = statusTab
-                    return data
-                }
-            }
-            val requestQueue = Volley.newRequestQueue(context)
-            requestQueue.add(stringRequest)
-        }
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -156,6 +152,6 @@ class PlaceholderFragment : Fragment(), OnReplenishmentClickListener {
     }
 
     override fun onRelenishmentClicked(position: Int) {
-        Toast.makeText(context,"Replenishment"+position+" Clicked", Toast.LENGTH_LONG).show()
+        Toast.makeText(context,"Replenishment"+pageViewModel.dataReservation[position].replenishment_title+" Clicked", Toast.LENGTH_LONG).show()
     }
 }

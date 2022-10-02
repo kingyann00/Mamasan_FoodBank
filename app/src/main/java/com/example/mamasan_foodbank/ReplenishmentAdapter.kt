@@ -7,17 +7,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ReplenishmentAdapter (val campaignList: ArrayList<Replenishment>,private  val onReplenishmentClickListener:OnReplenishmentClickListener): RecyclerView.Adapter<ReplenishmentAdapter.ViewHolder>() {
+class ReplenishmentAdapter (val replenishmentList: ArrayList<DataReplenishments>,private  val onReplenishmentClickListener:OnReplenishmentClickListener): RecyclerView.Adapter<ReplenishmentAdapter.ViewHolder>() {
 
-    override fun getItemCount()= campaignList.size
+    override fun getItemCount()= replenishmentList.size
 
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        holder.replenishmentImg.setBackgroundResource(campaignList[position].replenishmentImg)
-        holder.replenishmentTitle.text = campaignList[position].replenishmentTitle
-        holder.location.text = campaignList[position].location
+        holder.replenishmentImg.setBackgroundResource(R.drawable.campaign_img_test)
+        holder.replenishmentTitle.text = replenishmentList[position].replenishment_title
+        holder.location.text = replenishmentList[position].location
 //        holder.replenishment_dateTime.text = campaignList[position].replenishment_dateTime
 holder.itemView.setOnClickListener{
     onReplenishmentClickListener.onRelenishmentClicked(position)

@@ -1,41 +1,22 @@
-package com.example.mamasan_foodbank.ui.main
+package com.example.mamasan_foodbank
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.AuthFailureError
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
-import com.example.mamasan_foodbank.DataReplenishments
-import com.example.mamasan_foodbank.ReplenishmentAdapter
 import com.google.gson.Gson
 
-class PageViewModel : ViewModel() {
-
-    private val _index = MutableLiveData<Int>()
-
+class ReplenishmentSearchViewModel : ViewModel() {
 
 
     var dataReplenishments: ArrayList<DataReplenishments>
 
-
-    var gson = Gson()
     init {
         dataReplenishments = ArrayList()
     }
 
-    val text: LiveData<String> = Transformations.map(_index) {
-        "Showing $it entries"
-    }
 
-     fun getDataCount()= "Showing "+dataReplenishments.size+1+" entries"
+    fun getDataCount()=dataReplenishments.size+1
     fun setDataReplenishments(data: Array<DataReplenishments>){
         dataReplenishments.clear()
 
@@ -65,9 +46,6 @@ class PageViewModel : ViewModel() {
 
         }
 
-    }
-    fun setIndex(index: Int) {
-        _index.value = index
     }
 
 

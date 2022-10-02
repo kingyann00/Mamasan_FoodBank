@@ -9,12 +9,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mamasan_foodbank.databinding.ActivityReplenishmentSearchBinding
+
 import com.example.mamasan_foodbank.databinding.FragmentReplenishmentListBinding
 import com.example.mamasan_foodbank.databinding.FragmentReplenishmentSearchingBinding
 
 class replenishment_searching : Fragment(),OnReplenishmentClickListener {
-    private var replenishmentList = ArrayList<Replenishment>()
+    private var replenishmentList = ArrayList<DataReplenishments>()
+    private  var replenishment = ArrayList<DataReplenishments>()
     private lateinit var replenishmentAdapter : ReplenishmentAdapter
     lateinit var replenishmentImg: Array<Int>
     lateinit var replenishmentTitle: Array<String>
@@ -34,7 +35,7 @@ class replenishment_searching : Fragment(),OnReplenishmentClickListener {
 
         _binding = FragmentReplenishmentSearchingBinding.inflate(inflater, container, false)
         val root = _binding.root
-        dataIntialize()
+
         val recyclerView: RecyclerView = _binding.RecyclerReplenishmentList
         replenishmentAdapter= ReplenishmentAdapter(replenishmentList,this)
         val layoutManager = LinearLayoutManager(context)
@@ -48,49 +49,6 @@ class replenishment_searching : Fragment(),OnReplenishmentClickListener {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(ReplenishmentSearchingViewModel::class.java)
 
-    }
-    private fun dataIntialize() {
-
-
-        replenishmentTitle = arrayOf(
-            "Food 1", "Food 2", "Food 3", "Food 4", "Food 6", "Food 5"
-        )
-
-        location = arrayOf(
-            "Frozen Food",
-            "Frozen Food",
-            "Dry Food",
-            "Frozen Food",
-            "Frozen Food",
-            "Frozen Food"
-        )
-
-        replenishment_dateTime = arrayOf(
-            "Sat, Sep 24, 11:06 AM","Sat, Sep 24, 11:06 AM","Sat, Sep 24, 11:06 AM","Sat, Sep 24, 11:06 AM","Sat, Sep 24, 11:06 AM","Sat, Sep 24, 11:06 AM"
-        )
-        replenishmentImg = arrayOf(
-            R.drawable.campaign_img_test,
-            R.drawable.campaign_img_test,
-            R.drawable.campaign_img_test,
-            R.drawable.campaign_img_test,
-            R.drawable.campaign_img_test,
-            R.drawable.campaign_img_test
-        )
-
-
-
-        replenishmentList = ArrayList()
-        for (i in replenishmentTitle.indices) {
-            val replenishment = Replenishment(
-                replenishmentImg[i],
-                replenishmentTitle[i],
-                location[i],
-                replenishment_dateTime[i],
-
-                )
-            replenishmentList.add(replenishment)
-
-        }
     }
 
     override fun onRelenishmentClicked(position: Int) {

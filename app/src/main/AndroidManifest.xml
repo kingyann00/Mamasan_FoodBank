@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.mamasan_foodbank">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,16 +14,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mamasan_FoodBank"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".replenishment_reservation.replenishment_reservation_list"
+            android:exported="false"
+            android:label="@string/title_activity_replenishment_reservation_list"
+            android:theme="@style/Theme.Mamasan_FoodBank.NoActionBar" />
+
         <activity
             android:name=".replenishment_create"
             android:exported="false" />
-        <activity
-            android:name=".replenishment_reservation"
-            android:exported="false" />
-        <activity
-            android:name=".replenishment_search"
-            android:exported="false" />
+
         <activity
             android:name=".replenishment_list"
             android:exported="false"

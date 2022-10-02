@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/replenishment_reservation"
+    app:startDestination="@id/activity_replenishment_reservation_list">
+
+    <fragment
+        android:id="@+id/replenishment_reservation_detail"
+        android:name="com.example.mamasan_foodbank.replenishment_reservation_detail"
+        android:label="replenishment_reservation_detail"
+        tools:layout="@layout/fragment_replenishment_reservation_detail"/>
+
+    <fragment
+        android:id="@+id/replenishment_reservation_search"
+        android:name="com.example.mamasan_foodbank.replenishment_reservation.replenishment_reservation_search"
+        android:label="fragment_replenishment_reservation_search"
+        tools:layout="@layout/fragment_replenishment_reservation_search" >
+        <action
+            android:id="@+id/action_replenishment_reservation_search_to_replenishment_list"
+            app:destination="@id/activity_replenishment_reservation_list" />
+    </fragment>
+    <activity
+        android:id="@+id/activity_replenishment_reservation_list"
+        android:name="com.example.mamasan_foodbank.replenishment_list"
+        android:label="activity_replenishment_reservation_list"
+        tools:layout="@layout/activity_replenishment_reservation_list" />
+    <action
+        android:id="@+id/action_activity_replenishment_reservation_list_to_replenishment_reservation_search"
+        app:destination="@id/replenishment_reservation_search" />
+</navigation>

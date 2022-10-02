@@ -28,11 +28,7 @@ class replenishment_list : AppCompatActivity(){
         val tabs: TabLayout = binding.tabs
         tabs.setupWithViewPager(viewPager)
 
-        binding.searchBar.setOnClickListener{
-                view->
-            val intent = Intent(this,replenishment_search::class.java)
-            startActivity(intent)
-        }
+
     }
 
 

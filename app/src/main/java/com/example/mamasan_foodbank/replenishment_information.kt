@@ -31,6 +31,7 @@ class replenishment_information : Fragment() {
     ): View? {
         _binding = FragmentReplenishmentInformationBinding.inflate(inflater, container, false)
         val root = binding.root
+
         _binding.replenishmentTitleCard.setOnClickListener{
             if (_binding.replenishmentInformationCard.isVisible == true)
                 _binding.replenishmentInformationCard.isVisible = false
